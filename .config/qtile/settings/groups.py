@@ -1,7 +1,3 @@
-# Antonio Sarosi
-# https://youtube.com/c/antoniosarosi
-# https://github.com/antoniosarosi/dotfiles
-
 # Qtile workspaces
 
 from libqtile.config import Key, Group
@@ -12,17 +8,15 @@ from .keys import mod, keys
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 # Icons: 
 # nf-fa-chrome,
-# nf-mdi-visualstudio
-# nf-dev-terminal, 
 # nf-fa-code,
-# nf-fae-python, 
+# nf-dev-terminal, 
 # nf-mdi-language_cpp, 
+# nf-fae-python, 
 # nf-fa-spotify,
 # nf-mdi-discord, 
-# nf-fa-folder
 
 groups = [Group(i) for i in [
-    "   ", " ﬏  ", "   ", "   ", "   ", "  ﭱ ", "   ", "  ﭮ ", "   ",        
+    "   ",  "   ", "   ", "  ﭱ ", "   ", "   ", "  ﭮ "
 ]]
 
 for i, group in enumerate(groups):
