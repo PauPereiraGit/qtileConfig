@@ -3,7 +3,7 @@ from .theme import colors
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
-def base(fg='light', bg='dark'): 
+def base(fg='light', bg='dark'):
     return {
         'foreground': colors[fg],
         'background': colors[bg]
@@ -32,7 +32,7 @@ def powerline(fg="light", bg="dark"):
     )
 
 
-def workspaces(): 
+def workspaces():
     return [
         separator(),
         widget.GroupBox(
@@ -72,59 +72,79 @@ primary_widgets = [
     powerline('focus', 'dark'),
 
     icon(bg="focus", text=' '), # Icon: nf-fa-download
-    
+
     widget.CheckUpdates(
-        update_interval=1800,
-        distro="Arch_checkupdates",
+        update_interval=300,
         background=colors['focus'],
         colour_have_updates=colors['urgent'],
         colour_no_updates=colors['light'],
-        no_update_string='0',
-        display_format='{updates}',
-        custom_command='checkupdates',
+        no_update_string='0 Updates',
+        display_format='{updates} Updates',
         padding=8,
         mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('alacritty -e sudo pacman -Syu')}
     ),
 
 
     # Net
-    powerline('color8', 'focus'),
- 
-    widget.Net(**base(bg='color8'), interface='enp0s3', format='{down}   ↓↑  {up} '),
+    powerline('color9', 'focus'),
+
+    widget.Net(**base(bg='color9'), interface='enp3s0', format='{down} ↓↑ {up} '),
 
 
     # CPU
-    powerline('focus', 'color8'),
+    powerline('focus', 'color9'),
 
     icon(bg="focus", text='  CPU'), # nf-fa-desktop
 
     widget.CPU(**base(fg="light", bg='focus'), format='{load_percent}% '),
-    
+
+
+    # RAM
+    powerline('color9', 'focus'),
+
+    icon(bg="color9", text='  RAM'),
+
+    widget.Memory(
+        **base(bg='color9'),
+        format='{MemUsed: .0f}{mm} ',
+        mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('alacritty -e htop')},
+        padding=-2
+    ),
+
 
     # Layout
-    powerline('color8', 'focus'),
+    powerline('focus', 'color9'),
 
-    widget.CurrentLayoutIcon(**base(bg='color8'), scale=0.65),
+    widget.CurrentLayoutIcon(**base(bg='focus'), scale=0.65),
 
-    widget.CurrentLayout(**base(bg='color8'), padding=5),
+    widget.CurrentLayout(**base(bg='focus'), padding=5),
 
 
     # Calendar & Clock
-    powerline('focus', 'color8'),
+    powerline('color9', 'focus'),
 
-    icon(bg="focus", fontsize=17, text=' '), # Icon: nf-mdi-calendar_clock
+    icon(bg="color9", fontsize=17, text=' '), # Icon: nf-mdi-calendar_clock
 
-    widget.Clock(**base(fg="text", bg="focus"), format='%A, '),
-    
-    widget.Clock(**base(fg="light", bg="focus"), format='%d/%m/%Y - %H:%M '),
+    widget.Clock(**base(fg="text", bg="color9"), format='%A, '),
+
+    widget.Clock(**base(fg="light", bg="color9"), format='%d/%m/%Y - %H:%M '),
 
 
     # Volume
-    powerline('color8', 'focus'),
-    
-    widget.TextBox(text="Vol:", background=colors['color8'], padding=0),
+    powerline('focus', 'color9'),
 
-    widget.Volume(background=colors['color8'], padding=10)
+    icon(bg="focus", fontsize=17, text=' '), # Icon: nf-mdi-volume_high
+
+    widget.PulseVolume(
+        background=colors['focus'],
+        mute_command="pamixer --toggle-mute",
+        limit_max_volume=True,
+        volume_down_command="pamixer --decrease 5",
+        volume_up_command="pamixer --increase 5",
+        volume_app="pavucontrol",
+        update_interval=0.1,
+        padding=8
+    )
 ]
 
 
@@ -133,21 +153,84 @@ secondary_widgets = [
 
     separator(),
 
-    powerline('color1', 'color8'),
+
+    # Updates
+    powerline('focus', 'dark'),
+
+    icon(bg="focus", text=' '), # Icon: nf-fa-download
+
+    widget.CheckUpdates(
+        update_interval=300,
+        background=colors['focus'],
+        colour_have_updates=colors['urgent'],
+        colour_no_updates=colors['light'],
+        no_update_string='0 Updates',
+        display_format='{updates} Updates',
+        padding=8,
+        mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('alacritty -e sudo pacman -Syu')}
+    ),
 
 
-    # Layout
-    widget.CurrentLayoutIcon(**base(bg='color1'), scale=0.65),
+    # Net
+    powerline('color9', 'focus'),
 
-    widget.CurrentLayout(**base(bg='color1'), padding=5),
+    widget.Net(**base(bg='color9'), interface='enp3s0', format='{down} ↓↑ {up} '),
+
+
+    # CPU
+    powerline('focus', 'color9'),
+
+    icon(bg="focus", text='  CPU'), # nf-fa-desktop
+
+    widget.CPU(**base(fg="light", bg='focus'), format='{load_percent}% '),
+
+
+    # RAM
+    powerline('color9', 'focus'),
+
+    icon(bg="color9", text='  RAM'),
+
+    widget.Memory(
+        **base(bg='color9'),
+        format='{MemUsed: .0f}{mm} ',
+        mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('alacritty -e htop')},
+        padding=-2
+    ),
+
+
+   # Layout
+    powerline('focus', 'color9'),
+
+    widget.CurrentLayoutIcon(**base(bg='focus'), scale=0.65),
+
+    widget.CurrentLayout(**base(bg='focus'), padding=5),
 
 
     # Calendar & Clock
-    powerline('color2', 'color1'),
+    powerline('color9', 'focus'),
 
-    widget.Clock(**base(bg='color2'), format='%d/%m/%Y - %H:%M '),
+    icon(bg="color9", fontsize=17, text=' '), # Icon: nf-mdi-calendar_clock
 
-    powerline('color8', 'color2'),
+    widget.Clock(**base(fg="text", bg="color9"), format='%A, '),
+
+    widget.Clock(**base(fg="light", bg="color9"), format='%d/%m/%Y - %H:%M '),
+
+
+    # Volume
+    powerline('focus', 'color9'),
+
+    icon(bg="focus", fontsize=17, text=' '), # Icon: nf-mdi-volume_high
+
+    widget.PulseVolume(
+        background=colors['focus'],
+        mute_command="pamixer --toggle-mute",
+        limit_max_volume=True,
+        volume_down_command="pamixer --decrease 5",
+        volume_up_command="pamixer --increase 5",
+        volume_app="pavucontrol",
+        update_interval=0.1,
+        padding=8
+    )
 ]
 
 
@@ -156,4 +239,6 @@ widget_defaults = {
     'fontsize': 14,
     'padding': 1,
 }
+
+
 extension_defaults = widget_defaults.copy()
