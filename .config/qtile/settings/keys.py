@@ -1,7 +1,3 @@
-# Antonio Sarosi
-# https://youtube.com/c/antoniosarosi
-# https://github.com/antoniosarosi/dotfiles
-
 # Qtile keybindings
 
 from libqtile.config import Key
@@ -9,6 +5,7 @@ from libqtile.command import lazy
 
 
 mod = "mod4"
+mod2 = "mod5"
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ Window Configs ------------
@@ -59,6 +56,15 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Browser
     ([mod], "b", lazy.spawn("chromium")),
     
+    # VS Code
+    ([mod], "v", lazy.spawn("code")),
+    
+    # Spotify
+    ([mod], "h", lazy.spawn("spotify")),
+
+    # Discord
+    ([mod], "n", lazy.spawn("discord")),
+
     # File Explorer
     ([mod], "e", lazy.spawn("pcmanfm")),
 
@@ -72,17 +78,19 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ Hardware Configs ------------
 
     # Volume
-    (["mod5"], "F2", lazy.spawn(
-        "amixer -c 0 sset Master 1- unmute"
+    ([mod2], "F2", lazy.spawn(
+        "pamixer --decrease 5"
     )),
-    (["mod5"], "F3", lazy.spawn(
-        "amixer -c 0 sset Master 1+ unmute"
+
+    ([mod2], "F3", lazy.spawn(
+        "pamixer --increase 5"
     )),
-    (["mod5"], "F4", lazy.spawn(
-        "amixer -q set Master toggle"
+
+    ([mod2], "F4", lazy.spawn(
+        "pamixer --toggle-mute"
     )),
 
     # Brightness
-    (["mod5"], "F5", lazy.spawn("brightnessctl set +10%")),
-    (["mod5"], "F6", lazy.spawn("brightnessctl set 10%-")),
+    ([mod2], "F5", lazy.spawn("brightnessctl set +10%")),
+    ([mod2], "F6", lazy.spawn("brightnessctl set 10%-")),
 ]]
